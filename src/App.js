@@ -1,26 +1,32 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from 'react'
+
+import { Route, Switch, Redirect } from 'react-router-dom'
+
+import Test from './components/Test/Test'
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <Switch>
+      {/* Removes trailing slashes */}
+      <Route
+        path="/:url*(/+)"
+        exact
+        strict
+        render={({ location }) => (
+          <Redirect to={location.pathname.replace(/\/+$/, '')} />
+        )} />
+      {/* Removes duplicate slashes in the middle of the URL */}
+      <Route
+        path="/:url(.*//+.*)"
+        exact
+        strict
+        render={({ match }) => (
+          <Redirect to={`/${match.params.url.replace(/\/\/+/, '/')}`} />
+        )}
+      />
+      <Route path="/test*" component={Test} />
+    </Switch>
+  )
 }
 
-export default App;
+export default App

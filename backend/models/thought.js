@@ -1,20 +1,23 @@
-const thought = (sequelize, DataTypes) => {
-
-  // Schema
-  const Thought = sequelize.define('thought', {
-    title: {
-      type: DataTypes.STRING
-    },
-    content: {
-      type: DataTypes.STRING
-    }
-  })
-
-  // Associations
-  Thought.associate = models => { Thought.belongsTo(models.User) }
-
-  // Static methods
-
+'use strict'
+module.exports = (sequelize, DataTypes) => {
+  const Thought = sequelize.define('Thought', {
+    title: DataTypes.STRING,
+    content: DataTypes.STRING,
+    // userid: {
+    //   type: DataTypes.INTEGER,
+    //   allowNull: false,
+    //   references: {
+    //     model: 'User',
+    //     key: 'id',
+    //   },
+    //   onDelete: 'CASCADE',
+    // }
+  }, {})
+  Thought.associate = function (models) {
+    // associations can be defined here
+    Thought.belongsTo(models.User, {
+      foreignKey: "UserId"
+    })
+  }
+  return Thought
 }
-
-export default thought
